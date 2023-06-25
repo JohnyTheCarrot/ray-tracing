@@ -56,6 +56,7 @@ bool Sphere::IsHitting(const Ray &ray, double tMin, double tMax, Hit &hitOut) co
     hitOut.point = ray.At(root);
     Vector3 outwardNormal{ (hitOut.point - m_Center) / m_Radius };
     hitOut.SetFaceNormal(ray, outwardNormal);
+    hitOut.materialPtr = m_MaterialPtr;
 
     return true;
 }

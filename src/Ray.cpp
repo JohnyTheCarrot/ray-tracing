@@ -6,6 +6,7 @@
 #include "Ray.h"
 #include "Sphere.h"
 #include "World.h"
+#include "Materials/Material.h"
 
 const double infinity = std::numeric_limits<double>::infinity();
 
@@ -33,11 +34,14 @@ Vector3 Ray::GetColor(const World &world, int depth) const {
         return { 0, 0, 0 };
 
     Hit hitInfo{};
-    if (world.IsHitting(*this, 0.0, infinity, hitInfo))
+    if (world.IsHitting(*this, 0.001, infinity, hitInfo))
     {
-        Vector3 target{ hitInfo.point + hitInfo.normal + Vector3::RandomInUnitSphere() };
-        Ray subRay{ hitInfo.point, target - hitInfo.point };
-        return 0.5 * subRay.GetColor(world, depth + 1);
+        Ray scattered;
+        Vector3 attenuation;
+        if (hitInfo.materialPtr->Scatter(*this, hitInfo, attenuation, scattered))
+            return attenuation * scattered.GetColor(world, depth + 1);
+
+        return Vector3{ 0, 0, 0 };
     }
 
     double t{ 0.5 * (m_Direction.Normalized().GetY() + 1.0) };

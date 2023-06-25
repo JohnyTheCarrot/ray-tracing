@@ -169,9 +169,29 @@ Vector3 Vector3::Random(double min, double max) {
 }
 
 Vector3 Vector3::RandomInUnitSphere() {
-    Vector3 random{ Random(-1, 1).Normalized() * RandomDouble(0.01, 1.0) };
+    return Random(-1, 1).Normalized() * RandomDouble(0.01, 1.0);
+}
 
-    assert(random.GetLength() <= 1);
+Vector3 Vector3::RandomUnit() {
+    return Random(-1, 1).Normalized();
+}
 
-    return random;
+Vector3 Vector3::RandomInHemisphere(const Vector3& normal) {
+    Vector3 randomUnit{ RandomUnit() };
+
+    if (randomUnit.Dot(normal) > 0.0)
+        return randomUnit;
+
+    return -randomUnit;
+}
+
+bool Vector3::IsNearZero() const {
+    double absoluteTolerance{ 1e-8 };
+    return      fabs(m_Elements[0]) < absoluteTolerance
+            &&  fabs(m_Elements[1]) < absoluteTolerance
+            &&  fabs(m_Elements[2]) < absoluteTolerance;
+}
+
+Vector3 Vector3::Reflect(const Vector3 &normal) const {
+    return *this - 2 * Dot(normal) * normal;
 }

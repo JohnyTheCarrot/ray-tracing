@@ -9,10 +9,15 @@
 
 class World;
 
-constexpr int MAX_DEPTH{ 50 };
+constexpr int MAX_DEPTH{ 5 };
 
 class Ray {
 public:
+    Ray()
+        : m_Origin{ 0, 0, 0 }
+        , m_Direction{ 0, 0, 0 }
+    {}
+
     Ray(const Vector3 &origin, const Vector3 &direction);
 
     [[nodiscard]]

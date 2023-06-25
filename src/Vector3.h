@@ -86,6 +86,16 @@ public:
 
     static Vector3 RandomInUnitSphere();
 
+    static Vector3 RandomUnit();
+
+    static Vector3 RandomInHemisphere(const Vector3& normal);
+
+    [[nodiscard]]
+    bool IsNearZero() const;
+
+    [[nodiscard]]
+    Vector3 Reflect(const Vector3 &normal) const;
+
 private:
     double m_Elements[3];
 };
