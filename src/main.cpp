@@ -17,13 +17,12 @@ int main() {
     double aspectRatio = 16.0 / 9.0;
     int imageWidth = 960;
     int imageHeight = static_cast<int>(imageWidth / aspectRatio);
-    int samplesPerPixel = 25;
+    int samplesPerPixel = 150;
 
     // Camera
     Camera camera{};
 
     uint8_t *image{ new uint8_t[imageWidth * imageHeight * 3] };
-    size_t index{};
 
     // World
     World world{};
@@ -51,7 +50,7 @@ int main() {
     world.Add(std::make_unique<Sphere>(Sphere{ {0, distance, z}, radii, materialMetalYellow }));
 //    world.Add(std::make_unique<Sphere>(Sphere{ {distance, distance, z}, radii }));
 
-//    #pragma omp parallel for schedule(guided)
+    #pragma omp parallel for schedule(guided)
     for (int y{imageHeight - 1}; y >= 0; --y) {
         for (int x{}; x < imageWidth; ++x) {
             Vector3 pixelColor{ 0, 0, 0 };
@@ -70,6 +69,7 @@ int main() {
             int rInt{static_cast<int>(255 * std::clamp(r, 0.0, 1.0))};
             int gInt{static_cast<int>(255 * std::clamp(g, 0.0, 1.0))};
             int bInt{static_cast<int>(255 * std::clamp(b, 0.0, 1.0))};
+            int index{ ((imageHeight - y - 1) * imageWidth + x) * 3 };
 
             image[index++] = rInt;
             image[index++] = gInt;
