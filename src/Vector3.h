@@ -31,6 +31,8 @@ public:
 
     Vector3 operator-() const;
 
+    Vector3 &operator-=(const Vector3 &other);
+
     Vector3 &operator+=(const Vector3 &other);
 
     Vector3 &operator*=(const Vector3 &other);
@@ -39,17 +41,23 @@ public:
 
     Vector3 &operator/=(double scalar);
 
+    Vector3 operator-(double scalar) const;
+
     Vector3 operator+(double scalar) const;
 
     Vector3 operator*(double scalar) const;
 
     Vector3 operator/(double scalar) const;
 
+    friend Vector3 operator-(double scalar, const Vector3 &other);
+
     friend Vector3 operator+(double scalar, const Vector3 &other);
 
     friend Vector3 operator*(double scalar, const Vector3 &other);
 
     friend Vector3 operator/(double scalar, const Vector3 &other);
+
+    Vector3 operator-(const Vector3 &other) const;
 
     Vector3 operator+(const Vector3 &other) const;
 
@@ -71,6 +79,12 @@ public:
 
     [[nodiscard]]
     double GetLengthSquared() const;
+
+    static Vector3 Random();
+
+    static Vector3 Random(double min, double max);
+
+    static Vector3 RandomInUnitSphere();
 
 private:
     double m_Elements[3];
